@@ -17,7 +17,7 @@ var general = require('role.general');
 var market = require('market');
 
 module.exports.loop = function () {
-    //market.run();
+    market.run();
     
     var myRoomName = "E59S26";
     var walls = Game.rooms[myRoomName].find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART)

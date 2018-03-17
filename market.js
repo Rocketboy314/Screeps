@@ -1,14 +1,7 @@
-/*
- * Module code goes here. Use 'module.exports' to export things:
- * module.exports.thing = 'a thing';
- *
- * You can import it from another modules like this:
- * var mod = require('market');
- * mod.thing == 'a thing'; // true
- */
-
 module.exports = {
     run: function () {
+		var MIN_RESOURCE_PROFIT = 0.1;
+		
         var orders = Game.market.getAllOrders();
         for (var i=0; i<orders.length; i++) {
             if (orders[i].type === "sell") {
@@ -33,6 +26,14 @@ module.exports = {
                 return b.price - a.price;
             });
             //console.log("Highest L      Order: " + l_orders[0].price);
+			var order = l_orders[0];
+			var amount = order.amount > 10 ? 10 : order.amount;
+			var cost = Game.markey.calcTransactionCost(amount, "E59S26", order.roomName);
+			if (order.price*amount - cost > MIN_L_PROFIT*amount) {
+				console.log("Available Offer: Amount: " + amount + " Cost: " + cost + " Profit: " + (amount-cost));
+            } else {
+                console.log("Bad Offer: Amount: " + amount + " Cost: " + cost + " Profit: " + (amount-cost));
+            }
         }
         if (energy_orders.length > 0) {
             energy_orders.sort(function(a,b) {
@@ -42,7 +43,7 @@ module.exports = {
             var order = energy_orders[0];
             var amount = order.amount > 300 ? 300 : order.amount;
             var cost = Game.market.calcTransactionCost(amount, "E59S26", order.roomName);
-            if (order.price*amount - cost > order.price*amount * 0.01) {
+            if (order.price*amount - cost > MIN_RESOURCE_PROFIT*amount) {
                 console.log("Available Offer: Amount: " + amount + " Cost: " + cost + " Profit: " + (amount-cost));
             } else {
                 console.log("Bad Offer: Amount: " + amount + " Cost: " + cost + " Profit: " + (amount-cost));
