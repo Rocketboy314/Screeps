@@ -9,7 +9,7 @@
 
 module.exports = {
     run: function(creep) {
-        var diePosition = new RoomPosition(24, 16, "E54N3");
+        var diePosition = new RoomPosition(23, 12, "E59S26");
         creep.moveTo(diePosition, {visualizePathStyle: {stroke: '#000000', opacity: '0.7'}});
         if (creep.pos.x == diePosition.x && creep.pos.y == diePosition.y)
             creep.room.memory.recycle = creep.id;

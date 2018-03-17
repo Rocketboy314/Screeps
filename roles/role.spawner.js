@@ -105,7 +105,7 @@ var roleSpawner = {
                 ];
             buffer_amount = 0;
             mode = "Under Attack Spawn.";
-        } else if (total >= 20) {
+        } else if (total >= 20 && spawner.room.energyCapacityAvailable > 400) {
             proportion = {
                 miners: 3,
                 carriers: 2,
@@ -132,7 +132,7 @@ var roleSpawner = {
                 ];
             buffer_amount = 200;
             mode = "Rich Spawn";
-        } else if (total >= 15) {
+        } else if (total >= 15 && spawner.room.energyCapacityAvailable > 400) {
             proportion = {
                 miners: 5,
                 carriers: 3,
@@ -159,7 +159,7 @@ var roleSpawner = {
                 ];
                 buffer_amount = 50;
             mode = "Prosperous Spawn";
-        } else if (total >= 8) {
+        } else if (total >= 8 && spawner.room.energyCapacityAvailable > 400) {
             proportion = {
                 miners: 7,
                 carriers: 4,
@@ -186,7 +186,7 @@ var roleSpawner = {
                 ];
                 buffer_amount = 0;
             mode = "Normal Spawn.";
-        } else if (total >= 4) {
+        } else if (total >= 4 && spawner.room.energyCapacityAvailable > 400) {
             proportion = {
                 miners: 3,
                 carriers: 2,
@@ -213,7 +213,7 @@ var roleSpawner = {
                 ];
             buffer_amount = 0;
             mode = "Low Resource Spawn.";
-        } else {
+        } else if (spawner.room.energyCapacityAvailable > 400) {
             proportion = {
                 miners: 1,
                 carriers: 1,
@@ -227,11 +227,11 @@ var roleSpawner = {
             array.work = [
                 WORK,
                 CARRY, CARRY,
-                MOVE, MOVE, MOVE
+                MOVE, MOVE
                 ];
             array.mine = [
-                WORK, WORK,
-                CARRY,
+                WORK,
+                CARRY, CARRY,
                 MOVE
                 ];
             array.carry = [
@@ -240,6 +240,33 @@ var roleSpawner = {
                 ];
             buffer_amount = 0;
             mode = "Danger Spawn.";
+        } else {
+            proportion = {
+                miners: 2,
+                carriers: 2,
+                builders: 1,
+                upgraders: 2,
+                wall_fixers: 0,
+                road_fixers: 0,
+                scouts: 0,
+                soldiers: 0
+            }
+            array.work = [
+                WORK,
+                CARRY, CARRY,
+                MOVE
+                ];
+            array.mine = [
+                WORK,
+                CARRY, CARRY,
+                MOVE
+                ];
+            array.carry = [
+                CARRY, CARRY,
+                MOVE, MOVE
+                ];
+            buffer_amount = 0;
+            mode = "Beginning Spawn.";
         }
             
         if (miners.count >= 6 || spawner.memory.lastJob == 'miner') proportion.miners = 0;
@@ -256,7 +283,7 @@ var roleSpawner = {
             for (var i = 0; i< arr.length; i++) {
                 if (arr[i].name == 'soldier' && arr[i].count < 3)
                     return 'soldier';
-                else if (arr[i].count == NaN) {
+                else if (arr[i].count == NaN || !(arr[i].count >= -Infinity)) {
                     arr.splice(i, 1);
                     i--;
                 }
@@ -289,8 +316,8 @@ var roleSpawner = {
             buffer = cost+buffer_amount;
         }
         
-        var suffix = " - (1.0.3) ";
-        var name = "RocketCreep - " + goal_role + suffix + Math.floor(Math.random()*1000000);
+        var suffix = "-(1.0.3)";
+        var name = "RocketCreep-" + goal_role + suffix + Math.floor(Math.random()*1000000);
         var status;
         if (Game.spawns['RocketSpawnA'].room.energyAvailable > buffer) {
             status = Game.spawns['RocketSpawnA'].spawnCreep(parts, name, { memory: { role: goal_role } } );

@@ -57,12 +57,15 @@ module.exports = {
         else {
             creep.memory.doneDepositing = false;
             creep.memory.target = -1;
-            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+            var target = creep.pos.findClosestByPath(FIND_SOURCES);
+            if (target == null) {
+                target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN) && structure.energy < structure.energyCapacity;
                     }
-            });
+                });
+            }
             if(target != null) {
                 if(creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(target, {visualizePathStyle: {stroke: '#5555FF'}});

@@ -34,14 +34,17 @@ module.exports = {
                 if(creep.withdraw(source, RESOURCE_ENERGY, amount) == ERR_NOT_IN_RANGE) {
                     creep.moveTo(source, {visualizePathStyle: {stroke: '#55FF55'}});
                 }
+                var amount = sources[creep.memory.target].energy - (sources[creep.memory.target].storeCapacity * buffer);
+                if(creep.withdraw(sources[creep.memory.target], RESOURCE_ENERGY, amount) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(sources[creep.memory.target], {visualizePathStyle: {stroke: '#55FF55'}});
+                }
         } else {
-            var sources = creep.room.find(FIND_SOURCES);
+            var sources = creep.room.find(FIND_SOURCES)
             if (creep.memory.target == -1 || creep.memory.target == undefined) {
                 creep.memory.target = Math.floor(Math.random()*2);
                 creep.say("Source: " + creep.memory.target);
             }
-            var amount = sources[creep.memory.target].energy - (sources[creep.memory.target].storeCapacity * buffer);
-            if(creep.withdraw(sources[creep.memory.target], RESOURCE_ENERGY, amount) == ERR_NOT_IN_RANGE) {
+            if(creep.harvest(sources[creep.memory.target]) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(sources[creep.memory.target], {visualizePathStyle: {stroke: '#55FF55'}});
             }
         }
