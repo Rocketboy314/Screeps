@@ -14,6 +14,7 @@ module.exports = {
             creep.memory.doneDepositing = true;
 	    if(creep.carry.energy < creep.carryCapacity && creep.memory.doneDepositing) {
 	        var sources = creep.pos.findClosestByPath(FIND_DROPPED_RESOURCES);
+	        if (sources == null) sources = creep.pos.findClosestByPath(118);
             var total = _.sum(Game.creeps, (c) => c.memory.role != 'dying');
             var buffer = 0;
             if (total >= 8) buffer = 0.02;

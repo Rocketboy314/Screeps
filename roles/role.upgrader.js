@@ -1,16 +1,17 @@
+var general = require('role.general');
+
 var roleUpgrader = {
 
     /** @param {Creep} creep **/
     run: function(creep) {
-
         if(creep.memory.upgrading && creep.carry.energy == 0) {
             creep.memory.upgrading = false;
-            creep.say('??');
+            creep.say('🔄');
 	    }
 	    if(!creep.memory.upgrading && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.target = -1;
 	        creep.memory.upgrading = true;
-	        creep.say('?');
+	        creep.say('⚡');
 	    }
 
 	    if(creep.memory.upgrading) {

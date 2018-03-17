@@ -14,8 +14,12 @@ var roleSpawner = require('role.spawner');
 
 var general = require('role.general');
 
+var market = require('market');
+
 module.exports.loop = function () {
-    var myRoomName = "E54N3";
+    //market.run();
+    
+    var myRoomName = "E59S26";
     var walls = Game.rooms[myRoomName].find(FIND_STRUCTURES, {filter: (s) => (s.structureType == STRUCTURE_WALL || s.structureType == STRUCTURE_RAMPART)
         && s.pos.y < 49 && s.pos.y > 0 && s.pos.x < 49 && s.pos.x > 0
     });
@@ -36,7 +40,6 @@ module.exports.loop = function () {
     }
     
     var tower_ids = [
-        '5a5c336f7388e152053363dc'
         ];
     
     for(var i=0; i<tower_ids.length; i++) {

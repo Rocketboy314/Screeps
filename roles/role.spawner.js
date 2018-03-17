@@ -10,6 +10,14 @@
 var roleSpawner = {
     /** @param {Creep} creep **/
     run: function(spawner) {
+        var hasContainer = false;
+        var containers = spawner.room.find(FIND_STRUCTURES, {
+            filter: (source) => {
+                return source.structureType == STRUCTURE_CONTAINER;
+            }
+        });
+        if (JSON.stringify(containers) !== "[]")
+            hasContainer = true;
         if (spawner.memory.lastLevel != spawner.room.controller.level) {
             spawner.memory.lastLevel = spawner.room.controller.level;
             console.log("ANNOUNCEMENT: Leveled up to " + spawner.room.controller.level + "!");
@@ -105,7 +113,7 @@ var roleSpawner = {
                 ];
             buffer_amount = 0;
             mode = "Under Attack Spawn.";
-        } else if (total >= 20 && spawner.room.energyCapacityAvailable > 400) {
+        } else if (total >= 20 && spawner.room.energyCapacityAvailable > 400 && hasContainer) {
             proportion = {
                 miners: 3,
                 carriers: 2,
@@ -132,7 +140,7 @@ var roleSpawner = {
                 ];
             buffer_amount = 200;
             mode = "Rich Spawn";
-        } else if (total >= 15 && spawner.room.energyCapacityAvailable > 400) {
+        } else if (total >= 15 && spawner.room.energyCapacityAvailable > 400 && hasContainer) {
             proportion = {
                 miners: 5,
                 carriers: 3,
@@ -159,7 +167,7 @@ var roleSpawner = {
                 ];
                 buffer_amount = 50;
             mode = "Prosperous Spawn";
-        } else if (total >= 8 && spawner.room.energyCapacityAvailable > 400) {
+        } else if (total >= 8 && spawner.room.energyCapacityAvailable > 400 && hasContainer) {
             proportion = {
                 miners: 7,
                 carriers: 4,
@@ -186,7 +194,7 @@ var roleSpawner = {
                 ];
                 buffer_amount = 0;
             mode = "Normal Spawn.";
-        } else if (total >= 4 && spawner.room.energyCapacityAvailable > 400) {
+        } else if (total >= 4 && spawner.room.energyCapacityAvailable > 400 && hasContainer) {
             proportion = {
                 miners: 3,
                 carriers: 2,
@@ -213,7 +221,7 @@ var roleSpawner = {
                 ];
             buffer_amount = 0;
             mode = "Low Resource Spawn.";
-        } else if (spawner.room.energyCapacityAvailable > 400) {
+        } else if (spawner.room.energyCapacityAvailable > 400 && hasContainer) {
             proportion = {
                 miners: 1,
                 carriers: 1,
@@ -243,7 +251,7 @@ var roleSpawner = {
         } else {
             proportion = {
                 miners: 2,
-                carriers: 2,
+                carriers: 0,
                 builders: 1,
                 upgraders: 2,
                 wall_fixers: 0,
@@ -316,8 +324,8 @@ var roleSpawner = {
             buffer = cost+buffer_amount;
         }
         
-        var suffix = "-(1.0.3)";
-        var name = "RocketCreep-" + goal_role + suffix + Math.floor(Math.random()*1000000);
+        var suffix = "__1_0_3";
+        var name = "RocketCreep__" + goal_role + suffix + Math.floor(Math.random()*1000000);
         var status;
         if (Game.spawns['RocketSpawnA'].room.energyAvailable > buffer) {
             status = Game.spawns['RocketSpawnA'].spawnCreep(parts, name, { memory: { role: goal_role } } );

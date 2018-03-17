@@ -55,5 +55,11 @@ module.exports = {
             creep.memory.role = 'dying';
             console.log("ANNOUNCEMENT: " + creep.name + " is dying.");
         }
-    }
+    },
+	
+	markRoom: function (creep) {
+		if (creep.signController(creep.room.controller, "Thanks to whoever made these walls, but they're mine now.") == ERR_NOT_IN_RANGE) {
+			creep.moveTo(creep.room.controller);
+		}
+	}
 };

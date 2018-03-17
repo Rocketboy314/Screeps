@@ -42,6 +42,14 @@ module.exports = {
                                 structure.energy < structure.energyCapacity;
                     }
             });
+            if(targets == null && creep.room.energyCapacityAvailable < 400) {
+                targets = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                    filter: (structure) => {
+                        return (structure.structureType == STRUCTURE_SPAWN) &&
+                                structure.energy < structure.energyCapacity;
+                    }
+                })
+            }
             }
             if(creep.transfer(targets, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                 creep.moveTo(targets, {visualizePathStyle: {stroke: '#5555FF'}});

@@ -17,12 +17,12 @@ var roleBuilder = {
         if (creep.memory.building == null) creep.memory.building = true;
 	    if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;
-            creep.say('??');
+            creep.say('🔄');
 	    }
 	    if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
 	        creep.memory.target = -1;
 	        creep.memory.building = true;
-	        creep.say('??');
+	        creep.say('🚧');
 	    }
 	    if(creep.memory.building) {
 	        var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
